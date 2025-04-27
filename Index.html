@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>Login do Site</title>
+	<link rel="stylesheet" type="text/css" href="slide navbar style.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1582/1582819.png" type="image/png">
+</head>
+<style>
+    body{
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	font-family: 'Jost', sans-serif;
+	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
+}
+.main{
+	width: 350px;
+	height: 500px;
+	background: red;
+	overflow: hidden;
+	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+#chk{
+	display: none;
+}
+.signup{
+	position: relative;
+	width:100%;
+	height: 100%;
+}
+label{
+	color: #fff;
+	font-size: 2.3em;
+	justify-content: center;
+	display: flex;
+	margin: 50px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: .5s ease-in-out;
+}
+input{
+	width: 60%;
+	height: 10px;
+	background: #e0dede;
+	justify-content: center;
+	display: flex;
+	margin: 20px auto;
+	padding: 12px;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+}
+button{
+	width: 60%;
+	height: 40px;
+	margin: 10px auto;
+	justify-content: center;
+	display: block;
+	color: #fff;
+	background: #573b8a;
+	font-size: 1em;
+	font-weight: bold;
+	margin-top: 30px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	transition: .2s ease-in;
+	cursor: pointer;
+}
+button:hover{
+	background: #6d44b8;
+}
+.login{
+	height: 460px;
+	background: #eee;
+	border-radius: 60% / 10%;
+	transform: translateY(-180px);
+	transition: .8s ease-in-out;
+}
+.login label{
+	color: #573b8a;
+	transform: scale(.6);
+}
+
+#chk:checked ~ .login{
+	transform: translateY(-500px);
+}
+#chk:checked ~ .login label{
+	transform: scale(1);	
+}
+#chk:checked ~ .signup label{
+	transform: scale(.6);
+}
+
+</style>
+<body>
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+		<!-- Cadastro -->
+		<div class="signup">
+			<form onsubmit="registerUser(event)">
+				<label for="chk" aria-hidden="true">Cadastre-se</label>
+				<input type="text" id="signupUsername" placeholder="Nome de usuário" required>
+				<input type="email" id="signupEmail" placeholder="Email" required>
+				<input type="password" id="signupPassword" placeholder="Senha" required>
+				<button type="submit">Cadastre-se</button>
+			</form>
+		</div>
+
+		<!-- Login -->
+		<div class="login">
+			<form onsubmit="loginUser(event)">
+				<label for="chk" aria-hidden="true">Entrar</label>
+				<input type="email" id="loginEmail" placeholder="Email" required>
+				<input type="password" id="loginPassword" placeholder="Senha" required>
+				<button type="submit">Entrar</button>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		// Função para cadastrar o usuário
+		function registerUser(event) {
+			event.preventDefault(); // Impede o recarregamento da página
+
+			// Captura os dados de cadastro
+			var username = document.getElementById('signupUsername').value;
+			var email = document.getElementById('signupEmail').value;
+			var password = document.getElementById('signupPassword').value;
+
+			// Armazena os dados no localStorage
+			localStorage.setItem(email, JSON.stringify({ username: username, password: password }));
+
+			alert('Usuário cadastrado com sucesso!');
+			document.getElementById('chk').checked = false; // Volta para a tela de login
+		}
+
+		// Função para fazer login
+		function loginUser(event) {
+			event.preventDefault(); // Impede o recarregamento da página
+
+			// Captura os dados de login
+			var email = document.getElementById('loginEmail').value;
+			var password = document.getElementById('loginPassword').value;
+
+			// Verifica se o usuário está cadastrado
+			var storedUser = localStorage.getItem(email);
+			if (storedUser) {
+				var userData = JSON.parse(storedUser);
+				if (userData.password === password) {
+					// Armazena o estado de login no localStorage
+					localStorage.setItem('loggedInUser', JSON.stringify(userData));
+
+					// Redireciona para a página principal
+					window.location.href = 'Agenda.html'; // Substitua pelo nome da página principal do seu site
+				} else {
+					alert('Senha incorreta!');
+				}
+			} else {
+				alert('Usuário não encontrado!');
+			}
+		}
+
+		// Verifica se o usuário está logado ao carregar a página principal
+		function checkLoginStatus() {
+			var loggedInUser = localStorage.getItem('loggedInUser');
+			if (loggedInUser) {
+				var userData = JSON.parse(loggedInUser);
+				// Exibe o ícone de perfil e nome do usuário na página principal
+				document.getElementById('profileIcon').innerText = 'Perfil de ' + userData.username;
+			}
+		}
+	</script>
+</body>
+</html>

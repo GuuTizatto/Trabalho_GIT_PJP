@@ -1,0 +1,31 @@
+#profileIcon {
+    font-size: 24px;
+    color: #a0866f; /* Cor do perfil */
+    font-weight: bold;
+}
+
+#profileContainer {
+     display: flex;
+    align-items: center;
+}
+
+#profileIcon {
+    font-size: 20px;
+    color: #a0866f; /* Cor do perfil */
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+#logoutButton {
+     font-size: 14px;
+     padding: 10px;
+     color: white;
+     background-color: #ff4d4d;
+     border: none;
+     border-radius: 5px;
+     cursor: pointer;
+}
+
+#logoutButton:hover {
+     background-color: #ff3333;
+}
