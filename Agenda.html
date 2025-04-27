@@ -26,6 +26,39 @@
             border-radius: 8px 8px 0 0; 
             margin-bottom: 20px; 
         }
+
+        .search-bar {
+            width: 70%; /* Largura da barra de pesquisa, você pode alterar o valor */
+            max-width: 550px; /* Largura máxima da barra */
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            width: 100%;
+        }
+
+        .add-task-btn {
+            padding: 6px 12px; /* Botão menor */
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .add-task-form {
+            display: none; /* Inicialmente escondido */
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .task-completed {
+            text-decoration: line-through;
+            background-color: #f0f0f0;
+        }
+
+        .task-actions button {
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body onload="checkLoginStatus()">
@@ -33,6 +66,10 @@
         <div class="row align-items-start">
             <div class="table-title">
                 Lista de Tarefas
+                <div class="search-bar">
+                    <input type="text" class="form-control" id="taskSearch" placeholder="Pesquisar Tarefas">
+                </div>
+                <button class="btn btn-primary add-task-btn" onclick="showAddTaskForm()">Adicionar Tarefa</button>
 
                 <nav class="nav-2">
                     <div id="profileContainer">
@@ -42,41 +79,91 @@
                         <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
                     </div>
                 </nav>
-                <script src="loginStatus.js"></script>
             </div>
+
+            <script src="loginStatus.js"></script>
 
             <!-- Tabela -->
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
-                </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Data</th>
+                        <th scope="col">Ações</th>
+                    </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>@social</td>
-                </tr>
+                <tbody id="taskList">
+                    <!-- As tarefas serão inseridas aqui -->
                 </tbody>
             </table>
+
+            <!-- Formulário de Adicionar Tarefa -->
+            <div class="add-task-form" id="addTaskForm">
+                <h4>Adicionar Nova Tarefa</h4>
+                <form id="newTaskForm">
+                    <div class="mb-3">
+                        <label for="taskName" class="form-label">Nome da Tarefa</label>
+                        <input type="text" class="form-control" id="taskName" placeholder="Nome da Tarefa" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="taskDescription" placeholder="Descrição da Tarefa" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDate" class="form-label">Data (opcional)</label>
+                        <input type="date" class="form-control" id="taskDate">
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar Tarefa</button>
+                </form>
+            </div>
         </div>
     </div>  
+
+    <script>
+        // Função para mostrar o formulário de adicionar tarefa
+        function showAddTaskForm() {
+            document.getElementById('addTaskForm').style.display = 'block';
+        }
+
+        // Função para adicionar uma nova tarefa à tabela
+        document.getElementById('newTaskForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('taskName').value;
+            const description = document.getElementById('taskDescription').value;
+            const date = document.getElementById('taskDate').value;
+
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <th scope="row">1</th>
+                <td>${name}</td>
+                <td>${description}</td>
+                <td>${date || 'Não especificada'}</td>
+                <td class="task-actions">
+                    <button class="btn btn-secondary" onclick="markAsCompleted(this)">Concluir</button>
+                    <button class="btn btn-danger" onclick="deleteTask(this)">Excluir</button>
+                </td>
+            `;
+            document.getElementById('taskList').appendChild(newRow);
+
+            // Limpar o formulário
+            document.getElementById('newTaskForm').reset();
+            document.getElementById('addTaskForm').style.display = 'none'; // Ocultar o formulário após adicionar
+        });
+
+        // Função para marcar tarefa como concluída
+        function markAsCompleted(button) {
+            const row = button.closest('tr');
+            row.classList.toggle('task-completed');
+        }
+
+        // Função para excluir tarefa
+        function deleteTask(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+    </script>
 </body>
 </html>
