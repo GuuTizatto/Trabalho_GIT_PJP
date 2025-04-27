@@ -9,12 +9,14 @@
     <title>Lista de tarefas</title>
 </head>
 <body onload="checkLoginStatus()">
-    <div id="profileContainer">
-        <div id="profileIcon">
-            <a href="entrar.php" class="login" style="color: #fff;">Entrar</a>
+    <nav class="nav-2">
+        <div id="profileContainer">
+            <div id="profileIcon">
+                <a href="index.html" class="login" style="color: #fff;">Entrar</a>
+            </div>
+            <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
         </div>
-        <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
-    </div>
+    </nav>
     <script src="loginStatus.js"></script>
 </body>
 </html>

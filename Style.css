@@ -1,3 +1,59 @@
+.nav {
+    margin-left: 24vh;
+       display: flex;
+    gap: 20vh;
+    font-family: 'Beaufort for LOL Bold', serif;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.nav a:hover {
+    color: #a0866f;
+}
+
+.nav .login {
+    background-color: #555; /* Cor de fundo do botão de login */
+    border-radius: 5px; /* Cantos arredondados */
+    padding: 8px 16px; /* Espaçamento interno do botão de login */
+    font-weight: bold;
+}
+
+.nav .login:hover {
+    background-color: #666; /* Cor de fundo do botão ao passar o mouse */
+}
+
+.nav-2 {
+    margin-right: 24vh;
+       display: flex;
+    gap: 20vh;
+    font-family: 'Beaufort for LOL Bold', serif;
+}
+
+.nav-2 a {
+    color: white;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.nav-2 a:hover {
+    color: #a0866f;
+}
+
+.nav-2 .login {
+    background-color: #a0866f; /* Cor de fundo do botão de login */
+    border-radius: 5px; /* Cantos arredondados */
+    padding: 2px 6px; /* Espaçamento interno do botão de login */
+    font-weight: bold;
+}
+
+.nav-2 .login:hover {
+    background-color: #666; /* Cor de fundo do botão ao passar o mouse */
+}
+
 #profileIcon {
     font-size: 24px;
     color: #a0866f; /* Cor do perfil */
