@@ -115,12 +115,12 @@
         <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></button>
 
         <nav class="nav-2">
-            <div id="profileContainer">
-                <div id="profileIcon">
-                    <a href="index.html" class="login" style="color: #fff;">Entrar</a>
-                </div>
-                <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
+          <div id="profileContainer">
+            <div id="profileIcon">
+              <a href="index.html" class="login" style="color: #fff;">Entrar</a>
             </div>
+            <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
+          </div>
         </nav>
       </div>
 
@@ -178,9 +178,25 @@
 
     document.addEventListener("DOMContentLoaded", loadTasks);
 
+    function formatDateBR(dateStr) {
+      if (!dateStr) return "Não definida";
+      const [year, month, day] = dateStr.split("-");
+      return `${day}/${month}/${year}`;
+    }
+
     function loadTasks() {
-      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      taskId = tasks.length ? tasks[tasks.length - 1].id + 1 : 1;
+      const taskList = document.getElementById("taskList");
+      taskList.innerHTML = "";
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+      taskId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
+
+      // Ordenar por data (tarefas sem data vão para o fim)
+      tasks.sort((a, b) => {
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return new Date(a.date) - new Date(b.date);
+      });
 
       tasks.forEach(task => {
         addTaskToTable(task);
@@ -196,7 +212,7 @@
         <th scope="row">${task.id}</th>
         <td class="task-name">${task.name}</td>
         <td class="task-desc">${task.description}</td>
-        <td>${task.date ? task.date : "Não definida"}</td>
+        <td>${formatDateBR(task.date)}</td>
         <td class="task-actions">
           <button class="btn btn-success btn-sm complete-btn">Concluir</button>
           <button class="btn btn-danger btn-sm delete-btn">Excluir</button>
@@ -227,7 +243,9 @@
       const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
       tasks.push(task);
       saveTasks(tasks);
-      addTaskToTable(task);
+
+      // Atualiza lista ordenada
+      loadTasks();
 
       const modal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       modal.hide();
@@ -260,9 +278,7 @@
 
       rows.forEach(row => {
         const taskName = row.querySelector(".task-name").textContent.toLowerCase();
-        const taskDescription = row.querySelector(".task-desc").textContent.toLowerCase();
-
-        row.style.display = (taskName.includes(searchTerm) || taskDescription.includes(searchTerm)) ? "" : "none";
+        row.style.display = taskName.includes(searchTerm) ? "" : "none";
       });
     });
   </script>
