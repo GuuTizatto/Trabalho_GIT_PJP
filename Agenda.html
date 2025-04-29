@@ -76,6 +76,7 @@
       max-width: 400px;
       margin: 0 10px;
       margin-right: 50px;
+      margin-left: 80px;
     }
 
     .add-task-btn {
@@ -83,7 +84,7 @@
       color: white;
       border: none;
       padding: 8px 15px;
-      margin-right: 100px;
+      margin-left: 30px;
       border-radius: 5px;
       font-weight: bold;
       font-size: 0.9rem;
@@ -103,7 +104,7 @@
     }
   </style>
 </head>
-<body>
+<body onload="checkLoginStatus()">
   <div class="container text-center" style="margin-top: 50px;">
     <div class="row align-items-start">
       <div class="table-title">
@@ -112,6 +113,15 @@
           <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar tarefas">
         </div>
         <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></button>
+
+        <nav class="nav-2">
+            <div id="profileContainer">
+                <div id="profileIcon">
+                    <a href="index.html" class="login" style="color: #fff;">Entrar</a>
+                </div>
+                <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
+            </div>
+        </nav>
       </div>
 
       <!-- Modal -->
