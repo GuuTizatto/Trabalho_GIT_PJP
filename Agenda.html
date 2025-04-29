@@ -1,169 +1,169 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1582/1582819.png" type="image/png">
-    <title>Lista de tarefas</title>
-    <style>
-        table {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-            border-radius: 8px; /* Bordas arredondadas */
-            overflow: hidden; /* Para manter bordas arredondadas */
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1582/1582819.png" type="image/png">
+  <title>Lista de tarefas</title>
+  <style>
+    table {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-        .table-title {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            font-size: 2rem; 
-            font-weight: bold;
-            color: white;
-            background-color: #333333; 
-            padding: 10px 20px; 
-            border-radius: 8px 8px 0 0; 
-            margin-bottom: 20px; 
-        }
+    .table-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      background-color: #333333;
+      padding: 10px 20px;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
 
-        .search-bar {
-            width: 70%; /* Largura da barra de pesquisa, você pode alterar o valor */
-            max-width: 550px; /* Largura máxima da barra */
-            margin: 0 auto;
-        }
+    .search-bar {
+      flex-grow: 1;
+      max-width: 400px; /* <<< Agora você pode alterar aqui facilmente */
+      margin: 0 10px;
+      margin-right: 50px;  
+    }
 
-        .search-bar input {
-            width: 100%;
-        }
+    .add-task-btn {
+      background-color: #6d44b8;
+      color: white;
+      border: none;
+      padding: 8px 15px; /* <<< Botão bem menor */
+      margin-right: 100px;
+      border-radius: 5px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
 
-        .add-task-btn {
-            padding: 6px 12px; /* Botão menor */
-            font-size: 14px;
-            font-weight: bold;
-        }
+    .add-task-btn:hover {
+      background-color: #a0866f;
+    }
 
-        .add-task-form {
-            display: none; /* Inicialmente escondido */
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
+    .task-actions button {
+      margin-right: 5px;
+    }
 
-        .task-completed {
-            text-decoration: line-through;
-            background-color: #f0f0f0;
-        }
-
-        .task-actions button {
-            margin-left: 10px;
-        }
-    </style>
+    .completed {
+      color: gray;
+      text-decoration: line-through;
+    }
+  </style>
 </head>
-<body onload="checkLoginStatus()">
-    <div class="container text-center" style="margin-top: 50px;">
-        <div class="row align-items-start">
-            <div class="table-title">
-                Lista de Tarefas
-                <div class="search-bar">
-                    <input type="text" class="form-control" id="taskSearch" placeholder="Pesquisar Tarefas">
-                </div>
-                <button class="btn btn-primary add-task-btn" onclick="showAddTaskForm()">Adicionar Tarefa</button>
+<body>
+  <div class="container text-center" style="margin-top: 50px;">
+    <div class="row align-items-start">
+      <div class="table-title">
+        Lista de Tarefas
 
-                <nav class="nav-2">
-                    <div id="profileContainer">
-                        <div id="profileIcon">
-                            <a href="index.html" class="login" style="color: #fff;">Entrar</a>
-                        </div>
-                        <button id="logoutButton" style="display: none;" onclick="logout()">Sair</button>
-                    </div>
-                </nav>
-            </div>
-
-            <script src="loginStatus.js"></script>
-
-            <!-- Tabela -->
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="taskList">
-                    <!-- As tarefas serão inseridas aqui -->
-                </tbody>
-            </table>
-
-            <!-- Formulário de Adicionar Tarefa -->
-            <div class="add-task-form" id="addTaskForm">
-                <h4>Adicionar Nova Tarefa</h4>
-                <form id="newTaskForm">
-                    <div class="mb-3">
-                        <label for="taskName" class="form-label">Nome da Tarefa</label>
-                        <input type="text" class="form-control" id="taskName" placeholder="Nome da Tarefa" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="taskDescription" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="taskDescription" placeholder="Descrição da Tarefa" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="taskDate" class="form-label">Data (opcional)</label>
-                        <input type="date" class="form-control" id="taskDate">
-                    </div>
-                    <button type="submit" class="btn btn-success">Salvar Tarefa</button>
-                </form>
-            </div>
+        <!-- Barra de pesquisa -->
+        <div class="search-bar">
+          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Pesquisar tarefas">
         </div>
-    </div>  
 
-    <script>
-        // Função para mostrar o formulário de adicionar tarefa
-        function showAddTaskForm() {
-            document.getElementById('addTaskForm').style.display = 'block';
-        }
+        <!-- Botão de Adicionar Tarefa -->
+        <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></i></button>
+      </div>
 
-        // Função para adicionar uma nova tarefa à tabela
-        document.getElementById('newTaskForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+      <!-- Modal para cadastro de tarefa -->
+      <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="taskModalLabel">Cadastrar Nova Tarefa</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="taskForm">
+                <div class="mb-3">
+                  <label for="taskName" class="form-label">Nome da Tarefa</label>
+                  <input type="text" class="form-control" id="taskName" placeholder="Nome da tarefa" required>
+                </div>
+                <div class="mb-3">
+                  <label for="taskDescription" class="form-label">Descrição</label>
+                  <textarea class="form-control" id="taskDescription" rows="3" placeholder="Descrição da tarefa" required></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="taskDate" class="form-label">Data da Tarefa (Opcional)</label>
+                  <input type="date" class="form-control" id="taskDate">
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar Tarefa</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            const name = document.getElementById('taskName').value;
-            const description = document.getElementById('taskDescription').value;
-            const date = document.getElementById('taskDate').value;
+      <!-- Tabela de tarefas -->
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th style="width: 5%;">#</th>
+            <th style="width: 20%;">Nome</th>
+            <th style="width: 45%;">Descrição</th>
+            <th style="width: 15%;">Data</th>
+            <th style="width: 15%;">Ações</th>
+          </tr>
+        </thead>
+        <tbody id="taskList">
+          <!-- As tarefas serão adicionadas aqui -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <th scope="row">1</th>
-                <td>${name}</td>
-                <td>${description}</td>
-                <td>${date || 'Não especificada'}</td>
-                <td class="task-actions">
-                    <button class="btn btn-secondary" onclick="markAsCompleted(this)">Concluir</button>
-                    <button class="btn btn-danger" onclick="deleteTask(this)">Excluir</button>
-                </td>
-            `;
-            document.getElementById('taskList').appendChild(newRow);
+  <script src="loginStatus.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let taskId = 1;
 
-            // Limpar o formulário
-            document.getElementById('newTaskForm').reset();
-            document.getElementById('addTaskForm').style.display = 'none'; // Ocultar o formulário após adicionar
-        });
+    document.getElementById("taskForm").addEventListener("submit", function(event) {
+      event.preventDefault();
 
-        // Função para marcar tarefa como concluída
-        function markAsCompleted(button) {
-            const row = button.closest('tr');
-            row.classList.toggle('task-completed');
-        }
+      const taskName = document.getElementById("taskName").value;
+      const taskDescription = document.getElementById("taskDescription").value;
+      const taskDate = document.getElementById("taskDate").value;
 
-        // Função para excluir tarefa
-        function deleteTask(button) {
-            const row = button.closest('tr');
-            row.remove();
-        }
-    </script>
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <th scope="row">${taskId++}</th>
+        <td class="task-name">${taskName}</td>
+        <td class="task-desc">${taskDescription}</td>
+        <td>${taskDate ? taskDate : "Não definida"}</td>
+        <td class="task-actions">
+          <button class="btn btn-success btn-sm complete-btn">Concluir</button>
+          <button class="btn btn-danger btn-sm delete-btn">Excluir</button>
+        </td>
+      `;
+      document.getElementById("taskList").appendChild(newRow);
+
+      const modal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
+      modal.hide();
+
+      document.getElementById("taskForm").reset();
+    });
+
+    document.getElementById("taskList").addEventListener("click", function(event) {
+      if (event.target.classList.contains("complete-btn")) {
+        const row = event.target.closest("tr");
+        row.querySelector(".task-name").classList.toggle("completed");
+        row.querySelector(".task-desc").classList.toggle("completed");
+      } else if (event.target.classList.contains("delete-btn")) {
+        const row = event.target.closest("tr");
+        row.remove();
+      }
+    });
+  </script>
 </body>
 </html>
