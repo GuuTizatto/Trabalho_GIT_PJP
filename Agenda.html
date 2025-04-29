@@ -7,12 +7,54 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1582/1582819.png" type="image/png">
-  <title>Lista de tarefas</title>
+  <title>Lista de Tarefas</title>
   <style>
-    table {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Estilo geral da tabela */
+    table.custom-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
       border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
       overflow: hidden;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+    }
+
+    .custom-table thead {
+      background-color: #f5f5f5;
+    }
+
+    .custom-table thead th {
+      padding: 12px;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .custom-table tbody tr:nth-child(odd) {
+      background-color: #ffffff;
+    }
+
+    .custom-table tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .custom-table tbody td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .custom-table tbody th {
+      font-weight: bold;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+      padding: 10px;
+    }
+
+    .completed-row {
+      background-color: #75b798 !important;
     }
 
     .table-title {
@@ -31,16 +73,16 @@
 
     .search-bar {
       flex-grow: 1;
-      max-width: 400px; /* <<< Agora você pode alterar aqui facilmente */
+      max-width: 400px;
       margin: 0 10px;
-      margin-right: 50px;  
+      margin-right: 50px;
     }
 
     .add-task-btn {
       background-color: #6d44b8;
       color: white;
       border: none;
-      padding: 8px 15px; /* <<< Botão bem menor */
+      padding: 8px 15px;
       margin-right: 100px;
       border-radius: 5px;
       font-weight: bold;
@@ -66,17 +108,13 @@
     <div class="row align-items-start">
       <div class="table-title">
         Lista de Tarefas
-
-        <!-- Barra de pesquisa -->
         <div class="search-bar">
-          <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Pesquisar tarefas">
+          <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar tarefas">
         </div>
-
-        <!-- Botão de Adicionar Tarefa -->
-        <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></i></button>
+        <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></button>
       </div>
 
-      <!-- Modal para cadastro de tarefa -->
+      <!-- Modal -->
       <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -105,8 +143,8 @@
         </div>
       </div>
 
-      <!-- Tabela de tarefas -->
-      <table class="table table-striped">
+      <!-- Tabela -->
+      <table class="custom-table">
         <thead>
           <tr>
             <th style="width: 5%;">#</th>
@@ -117,7 +155,7 @@
           </tr>
         </thead>
         <tbody id="taskList">
-          <!-- As tarefas serão adicionadas aqui -->
+          <!-- Tarefas dinâmicas aqui -->
         </tbody>
       </table>
     </div>
@@ -128,41 +166,94 @@
   <script>
     let taskId = 1;
 
-    document.getElementById("taskForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+    document.addEventListener("DOMContentLoaded", loadTasks);
 
-      const taskName = document.getElementById("taskName").value;
-      const taskDescription = document.getElementById("taskDescription").value;
-      const taskDate = document.getElementById("taskDate").value;
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      taskId = tasks.length ? tasks[tasks.length - 1].id + 1 : 1;
 
+      tasks.forEach(task => {
+        addTaskToTable(task);
+      });
+    }
+
+    function addTaskToTable(task) {
       const newRow = document.createElement("tr");
+      newRow.id = task.id;
+      if (task.completed) newRow.classList.add("completed-row");
+
       newRow.innerHTML = `
-        <th scope="row">${taskId++}</th>
-        <td class="task-name">${taskName}</td>
-        <td class="task-desc">${taskDescription}</td>
-        <td>${taskDate ? taskDate : "Não definida"}</td>
+        <th scope="row">${task.id}</th>
+        <td class="task-name">${task.name}</td>
+        <td class="task-desc">${task.description}</td>
+        <td>${task.date ? task.date : "Não definida"}</td>
         <td class="task-actions">
           <button class="btn btn-success btn-sm complete-btn">Concluir</button>
           <button class="btn btn-danger btn-sm delete-btn">Excluir</button>
         </td>
       `;
+
       document.getElementById("taskList").appendChild(newRow);
+    }
+
+    function saveTasks(tasks) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    document.getElementById("taskForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const taskName = document.getElementById("taskName").value;
+      const taskDescription = document.getElementById("taskDescription").value;
+      const taskDate = document.getElementById("taskDate").value;
+
+      const task = {
+        id: taskId++,
+        name: taskName,
+        description: taskDescription,
+        date: taskDate,
+        completed: false
+      };
+
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.push(task);
+      saveTasks(tasks);
+      addTaskToTable(task);
 
       const modal = bootstrap.Modal.getInstance(document.getElementById('taskModal'));
       modal.hide();
-
       document.getElementById("taskForm").reset();
     });
 
     document.getElementById("taskList").addEventListener("click", function(event) {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const taskId = event.target.closest("tr").id;
+      const taskIndex = tasks.findIndex(task => task.id == taskId);
+
       if (event.target.classList.contains("complete-btn")) {
         const row = event.target.closest("tr");
-        row.querySelector(".task-name").classList.toggle("completed");
-        row.querySelector(".task-desc").classList.toggle("completed");
+        row.classList.toggle("completed-row");
+        tasks[taskIndex].completed = !tasks[taskIndex].completed;
+        saveTasks(tasks);
       } else if (event.target.classList.contains("delete-btn")) {
-        const row = event.target.closest("tr");
-        row.remove();
+        if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
+          const row = event.target.closest("tr");
+          row.remove();
+          tasks.splice(taskIndex, 1);
+          saveTasks(tasks);
+        }
       }
+    });
+
+    document.getElementById("searchInput").addEventListener("input", function(event) {
+      const searchTerm = event.target.value.toLowerCase();
+      const rows = document.querySelectorAll("#taskList tr");
+
+      rows.forEach(row => {
+        const taskName = row.querySelector(".task-name").textContent.toLowerCase();
+        const taskDescription = row.querySelector(".task-desc").textContent.toLowerCase();
+
+        row.style.display = (taskName.includes(searchTerm) || taskDescription.includes(searchTerm)) ? "" : "none";
+      });
     });
   </script>
 </body>
