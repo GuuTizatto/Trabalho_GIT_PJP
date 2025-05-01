@@ -4,6 +4,8 @@
 
 **IDE utilizada:** *Visual Studeo*
 
+**Modelo criado em Figma:** https://www.figma.com/design/TgGpYFI6BfV4uDBsrTm60Z/SISTEMA-SENAC?node-id=0-1&p=f&t=SD9cikDmp24ZWtE9-0
+
 ✅ **Requisitos Funcionais (RF)**
 *São as funcionalidades que o sistema precisa oferecer.*
 
