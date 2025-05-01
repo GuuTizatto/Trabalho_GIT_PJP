@@ -1,1 +1,0 @@
-Ajustar o botão de Adicioanar Tarefa, provavelmente o Java Script de Login não está deixando aparecer na tela o cadastro de novas tarefas com transição!!
