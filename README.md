@@ -1,4 +1,4 @@
-Sistema de Agendamento
+*Sistema de Agendamento*
 
 Este é um sistema que permite o usuário, após efetuar um login, poder gerar agendamentos, marcar como concluídos, filtra-los e apaga-los.
 

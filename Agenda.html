@@ -10,7 +10,7 @@
   <title>Lista de Tarefas</title>
 </head>
 
-<body onload="checkLoginStatus()">
+<body onload="checkLoginStatus(); verificarTarefasHoje();">
   <div class="container text-center" style="margin-top: 50px;">
     <div class="row align-items-start">
       <div class="table-title">
@@ -20,7 +20,6 @@
           <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar tarefas">
         </div>
 
-        <!-- Botão de filtro com nome alterado -->
         <div class="dropdown" style="margin-bottom: 10px;">
           <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Filtro
@@ -29,6 +28,8 @@
             <li><a class="dropdown-item" href="#" data-filter="todos">Todos</a></li>
             <li><a class="dropdown-item" href="#" data-filter="pendentes">Pendentes</a></li>
             <li><a class="dropdown-item" href="#" data-filter="concluidos">Concluídos</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#" data-filter="prioritarios">Prioritários</a></li>
           </ul>
         </div>
 
@@ -84,9 +85,7 @@
             <th style="width: 15%;">Ações</th>
           </tr>
         </thead>
-        <tbody id="taskList">
-          <!-- Tarefas dinâmicas aqui -->
-        </tbody>
+        <tbody id="taskList"></tbody>
       </table>
     </div>
   </div>
@@ -189,7 +188,6 @@
       });
     });
 
-    // Filtro de tarefas
     document.getElementById("filterDropdown").addEventListener("click", function (event) {
       event.preventDefault();
       if (event.target.tagName === "A") {
@@ -200,8 +198,19 @@
 
     function filterTasks(tipo) {
       const rows = document.querySelectorAll("#taskList tr");
+      const hoje = new Date();
+      const inicioSemana = new Date(hoje);
+      const fimSemana = new Date(hoje);
+      inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+      fimSemana.setDate(inicioSemana.getDate() + 6);
+
       rows.forEach(row => {
         const isCompleted = row.classList.contains("completed-row");
+        const dataCell = row.querySelector("td:nth-child(4)").textContent;
+        const [dia, mes, ano] = dataCell.split("/");
+        const dataTarefa = new Date(`${ano}-${mes}-${dia}`);
+        dataTarefa.setHours(0, 0, 0, 0);
+
         switch (tipo) {
           case "todos":
             row.style.display = "";
@@ -212,8 +221,34 @@
           case "concluidos":
             row.style.display = isCompleted ? "" : "none";
             break;
+          case "prioritarios":
+            const estaNaSemana = dataCell !== "Não definida" &&
+              dataTarefa >= inicioSemana && dataTarefa <= fimSemana;
+            row.style.display = estaNaSemana ? "" : "none";
+            break;
         }
       });
+    }
+
+    function verificarTarefasHoje() {
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const tarefasHoje = tasks.filter(task => {
+        if (!task.date || task.completed) return false;
+
+        const [ano, mes, dia] = task.date.split("-");
+        const dataTarefa = new Date(ano, mes - 1, dia);
+        dataTarefa.setHours(0, 0, 0, 0);
+
+        return dataTarefa.getTime() === hoje.getTime();
+      });
+
+      if (tarefasHoje.length > 0) {
+        const nomes = tarefasHoje.map(t => `- ${t.name}`).join('\n');
+        alert(`Você tem ${tarefasHoje.length} tarefa(s) pendente(s) para hoje:\n\n${nomes}`);
+      }
     }
   </script>
 </body>
