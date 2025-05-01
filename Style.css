@@ -84,3 +84,88 @@ body{
 #logoutButton:hover {
      background-color: #ff3333;
 }
+
+table.custom-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+  }
+
+  .custom-table thead {
+    background-color: #f5f5f5;
+  }
+
+  .custom-table thead th {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .custom-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  .custom-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .custom-table tbody td,
+  .custom-table tbody th {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+
+  .completed-row {
+    background-color: #75b798 !important;
+  }
+
+  .table-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    background-color: #333333;
+    padding: 10px 20px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .search-bar {
+    flex-grow: 1;
+    max-width: 400px;
+    margin: 0 10px;
+  }
+
+  .add-task-btn {
+    background-color: #6d44b8;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin-left: 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .add-task-btn:hover {
+    background-color: #a0866f;
+  }
+
+  .task-actions button {
+    margin-right: 5px;
+  }
+
+  .completed {
+    color: gray;
+    text-decoration: line-through;
+  }
