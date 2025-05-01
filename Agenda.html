@@ -112,6 +112,18 @@
         <div class="search-bar">
           <input type="text" class="form-control" id="searchInput" placeholder="Pesquisar tarefas">
         </div>
+
+        <div class="dropdown" style="margin-bottom: 10px;">
+          <button class="btn btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Filtrar
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Todos</a></li>
+            <li><a class="dropdown-item" href="#">Pendentes</a></li>
+            <li><a class="dropdown-item" href="#">Concluídos</a></li>
+          </ul>
+        </div>
+
         <button class="add-task-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Adicionar <i class="bi bi-plus"></i></button>
 
         <nav class="nav-2">
@@ -190,13 +202,6 @@
       let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
       taskId = tasks.length ? Math.max(...tasks.map(t => t.id)) + 1 : 1;
-
-      // Ordenar por data (tarefas sem data vão para o fim)
-      tasks.sort((a, b) => {
-        if (!a.date) return 1;
-        if (!b.date) return -1;
-        return new Date(a.date) - new Date(b.date);
-      });
 
       tasks.forEach(task => {
         addTaskToTable(task);
