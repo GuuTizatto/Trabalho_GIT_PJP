@@ -1,9 +1,11 @@
-<font size="+2"> **Sistema de Agendamento**</font>
+**Sistema de Agendamento**
 
 *Este é um sistema que permite o usuário, após efetuar um login, poder gerar agendamentos, marcar como concluídos, filtra-los e apaga-los.*
 
-✅ Requisitos Funcionais (RF)
-São as funcionalidades que o sistema precisa oferecer.
+**IDE utilizada:** *Visual Studeo*
+
+✅ **Requisitos Funcionais (RF)**
+*São as funcionalidades que o sistema precisa oferecer.*
 
 RF01 – Cadastro de tarefas:
 O sistema deve permitir que o usuário cadastre uma nova tarefa com título, descrição, data e hora.
@@ -26,8 +28,8 @@ O sistema pode notificar o usuário antes do horário da tarefa.
 RF07 - Login:
 O sistema terá sistema de Login entre usuários. <!--(Bug onde não será possivel navegar entre Perfis com Agendamentos diferentes) -->
 
-🔒 Requisitos Não Funcionais (RNF)
-São critérios de qualidade e restrições técnicas.
+🔒 **Requisitos Não Funcionais (RNF)**
+*São critérios de qualidade e restrições técnicas.*
 
 RNF01 – Interface amigável
 A interface deve ser simples, intuitiva e de fácil navegação.
@@ -46,3 +48,16 @@ Os dados do usuário devem ser protegidos contra perda ou acesso não autorizado
 
 RNF06 – Escalabilidade (opcional)
 O sistema deve ser estruturado de forma que possa ser escalado no futuro para múltiplos usuários. <!-- Não Implementado completamente -->
+
+🔹 **Modelo de Negócio - Freemium (Grátis + Plano Premium)**
+*Como funciona:*
+
+Funções básicas (criação de tarefas, filtros, login) são gratuitas.
+
+Recursos avançados (notificações, calendário, tarefas compartilhadas, backup em nuvem, tags personalizadas) são pagos.
+
+*Exemplo de preços:*
+
+Grátis: uso individual com limite de tarefas.
+
+Premium: R$9,90/mês com recursos extras e sincronização.
