@@ -1,5 +1,6 @@
 body{
-    background:#fafafa !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
 }
 
 .nav {
@@ -133,7 +134,7 @@ table.custom-table {
     font-size: 2rem;
     font-weight: bold;
     color: white;
-    background-color: #333333;
+    background-color: #b700ff;
     padding: 10px 20px;
     border-radius: 8px 8px 0 0;
     margin-bottom: 20px;
