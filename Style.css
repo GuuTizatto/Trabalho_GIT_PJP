@@ -3,6 +3,10 @@ body{
   min-height: 100vh;
 }
 
+h2 {
+  font-weight: bold;
+}
+
 .nav {
     margin-left: 24vh;
        display: flex;
@@ -25,6 +29,7 @@ body{
     border-radius: 5px; /* Cantos arredondados */
     padding: 8px 16px; /* Espaçamento interno do botão de login */
     font-weight: bold;
+    font-family: Verdana;
 }
 
 .nav .login:hover {
@@ -34,7 +39,7 @@ body{
 .nav-2 {
     margin-right: 10px;
     margin-left: 50px;
-       display: flex;
+    display: flex;
     gap: 20vh;
     font-family: 'Beaufort for LOL Bold', serif;
 }
